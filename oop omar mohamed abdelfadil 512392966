@@ -70,6 +70,7 @@ def main():
                     print("Product added successfully!")
 
                 elif sub_choice == 2:
+                    product = Product("Sample Product", 10.0, "Sample Manufacturer", 100, "2024-12-31", 2024)
                     product.print_details()
 
                 elif sub_choice == 3:
@@ -102,6 +103,7 @@ def main():
                     print("Healthy product added successfully!")
 
                 elif sub_choice == 2:
+                    product = Healthy("Sample Healthy Product", 15.0, "Sample Manufacturer", 200, "2024-12-31", 2024, 5, "Sample Components")
                     product.print_details()
 
                 elif sub_choice == 3:
@@ -129,3 +131,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
