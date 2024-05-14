@@ -1,0 +1,96 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# Constants for interest rates based on loan years
+INTEREST_RATES = {
+    1: 13.76,
+    3: 14.06,
+    5: 14.87,
+    7: 15.71
+}
+
+
+class LoanCalculatorApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Loan Calculator")
+
+
+        # self.background_image = tk.PhotoImage(file='image/photo.gif')
+        # self.background_label = tk.Label(root, image=self.background_image)
+        # self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # Job selection
+        self.job_label = tk.Label(root, text="Select Your Job:")
+        self.job_label.pack()
+        self.job_var = tk.StringVar(root)
+        self.job_var.set("Select")
+        self.job_menu = tk.OptionMenu(root, self.job_var, "Doctor", "Engineer", "Teacher", "Other")
+        self.job_menu.pack()
+
+        # Loan amount entry
+        self.amount_label = tk.Label(root, text="Loan Amount:")
+        self.amount_label.pack()
+        self.amount_entry = tk.Entry(root)
+        self.amount_entry.pack()
+
+        # Loan years selection
+        self.years_label = tk.Label(root, text="Number of Years:")
+        self.years_label.pack()
+        self.years_var = tk.StringVar(root)
+        self.years_var.set("1")
+        self.years_menu = tk.OptionMenu(root, self.years_var, "1", "3", "5", "7")
+        self.years_menu.pack()
+
+        # Button to calculate loan payment
+        self.calculate_button = tk.Button(root, text="Calculate", command=self.calculate_payment)
+        self.calculate_button.pack()
+
+        # Label to display result
+        self.result_label = tk.Label(root, text="")
+        self.result_label.pack()
+
+        # Button to clear input fields
+        self.clear_button = tk.Button(root, text="Clear", command=self.clear_fields)
+        self.clear_button.pack()
+
+        # Button to exit application
+        self.exit_button = tk.Button(root, text="Exit", command=root.quit)
+        self.exit_button.pack()
+
+    def calculate_payment(self):
+        # Get user inputs
+        job = self.job_var.get()
+        amount_str = self.amount_entry.get()
+        years = int(self.years_var.get())
+
+        # Validate input
+        if not amount_str.isdigit() or int(amount_str) <= 0:
+            messagebox.showerror("Error", "Invalid loan amount. Please enter a positive integer.")
+            return
+
+        amount = int(amount_str)
+
+        # Calculate total interests
+        interest_rate = INTEREST_RATES.get(years, 0)
+        total_interests = amount * interest_rate / 100 * years
+
+        # Calculate total loan and monthly payment
+        total_loan = amount + total_interests
+        monthly_payment = total_loan / (years * 12)
+
+        # Display result
+        self.result_label.config(text=f"Total Loan: ${total_loan:.2f}\nMonthly Payment: ${monthly_payment:.2f}")
+
+    def clear_fields(self):
+        # Clear input fields and result label
+        self.job_var.set("Select")
+        self.amount_entry.delete(0, tk.END)
+        self.years_var.set("1")
+        self.result_label.config(text="")
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = LoanCalculatorApp(root)
+    root.mainloop()
